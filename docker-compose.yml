@@ -1,0 +1,43 @@
+name: chronicle
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: chronicle
+      POSTGRES_USER: chronicle
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-chronicle}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chronicle -d chronicle"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: ./api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://chronicle:${POSTGRES_PASSWORD:-chronicle}@db:5432/chronicle
+      # Account created on first start (skipped if it already exists).
+      DEFAULT_USERNAME: ${DEFAULT_USERNAME:-Deckard}
+      DEFAULT_PASSWORD: ${DEFAULT_PASSWORD:-Cain}
+      # Set to "false" to hide the Create Account option.
+      ALLOW_REGISTRATION: ${ALLOW_REGISTRATION:-true}
+      SESSION_DAYS: ${SESSION_DAYS:-30}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build: ./web
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8080}:80"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
