@@ -16,6 +16,8 @@ which Uniques, Sets and Runewords you're still missing.
 - **Search** by name, base item, set, rune or property (for example "faster cast").
 - **Filters and count:** All / Discovered / Undiscovered, with a "Showing X of Y · Z marked" count.
 - **Accounts:** each user has their own saved marks in PostgreSQL.
+- **Reset and log out:** buttons under the progress bar. Reset clears the current tab's marks or
+  all of them, after a confirmation.
 
 ## Run
 
@@ -71,6 +73,7 @@ tools/build_data.py  generates web/data.js from the game's data tables
 | `GET /api/me` | Current user |
 | `GET /api/marks` | Your marked entry ids |
 | `PUT /api/marks/:id`, `DELETE /api/marks/:id` | Mark / unmark an entry |
+| `DELETE /api/marks` | Reset: clears the ids in the body `{"ids": [...]}`, or all marks with no body |
 
 ## Updating the item data after a game patch
 

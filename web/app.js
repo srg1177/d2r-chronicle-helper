@@ -63,12 +63,53 @@
       $("#login-submit").disabled = false;
     }
   });
-  $("#logout").addEventListener("click", async () => {
+  async function logout() {
     try { await api("POST", "/logout"); } catch (e) { /* already logged out */ }
     for (const i of BY_ID.values()) i.found = false;
+    $("#reset-modal").hidden = true;
     setLoginMode(false);
     showLogin();
-  });
+  }
+  $("#logout").addEventListener("click", logout);
+  $("#logout-btn").addEventListener("click", logout);
+
+  // ---------- Reset marks ----------
+  const TAB_NAMES = { unique: "Unique", sets: "Set", runewords: "Runeword" };
+  function openReset() {
+    const tabMarked = DATA[state.tab].items.filter(i => i.found).length;
+    const allMarked = [...BY_ID.values()].filter(i => i.found).length;
+    $("#reset-text").textContent = allMarked
+      ? "Clear your marks? This can't be undone."
+      : "You have no marks to clear.";
+    $("#reset-tab").textContent = `Clear ${TAB_NAMES[state.tab]} marks (${tabMarked})`;
+    $("#reset-all").textContent = `Clear all marks (${allMarked})`;
+    $("#reset-tab").disabled = !tabMarked;
+    $("#reset-all").disabled = !allMarked;
+    $("#reset-error").textContent = "";
+    $("#reset-modal").hidden = false;
+    $("#reset-cancel").focus();
+  }
+  async function doReset(onlyTab) {
+    const targets = onlyTab ? DATA[state.tab].items.filter(i => i.found) : [...BY_ID.values()].filter(i => i.found);
+    $$("#reset-modal .btn").forEach(b => b.disabled = true);
+    try {
+      await api("DELETE", "/marks", onlyTab ? { ids: targets.map(i => i.id) } : undefined);
+      for (const i of targets) i.found = false;
+      $("#reset-modal").hidden = true;
+      refreshKeepingScroll();
+    } catch (err) {
+      if (err.status === 401) return logout();
+      $("#reset-error").textContent = "Could not reset: " + err.message;
+    } finally {
+      $$("#reset-modal .btn").forEach(b => b.disabled = false);
+    }
+  }
+  $("#reset-btn").addEventListener("click", openReset);
+  $("#reset-tab").addEventListener("click", () => doReset(true));
+  $("#reset-all").addEventListener("click", () => doReset(false));
+  $("#reset-cancel").addEventListener("click", () => $("#reset-modal").hidden = true);
+  $("#reset-modal").addEventListener("click", e => { if (e.target.id === "reset-modal") $("#reset-modal").hidden = true; });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") $("#reset-modal").hidden = true; });
 
   async function enter(username) {
     const { ids } = await api("GET", "/marks");

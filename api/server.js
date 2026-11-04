@@ -167,6 +167,21 @@ app.put("/api/marks/:id", wrap(auth), wrap(async (req, res) => {
   res.status(204).end();
 }));
 
+// Reset: clears the given ids, or every mark when no ids are sent.
+app.delete("/api/marks", wrap(auth), wrap(async (req, res) => {
+  const ids = req.body?.ids;
+  if (ids === undefined) {
+    const r = await pool.query("DELETE FROM marks WHERE user_id = $1", [req.user.id]);
+    return res.json({ removed: r.rowCount });
+  }
+  if (!Array.isArray(ids) || ids.length > 2000 || !ids.every(id => typeof id === "string" && ITEM_ID_RE.test(id))) {
+    return res.status(400).json({ error: "Bad item ids" });
+  }
+  const r = await pool.query("DELETE FROM marks WHERE user_id = $1 AND item_id = ANY($2::text[])",
+    [req.user.id, ids]);
+  res.json({ removed: r.rowCount });
+}));
+
 app.delete("/api/marks/:id", wrap(auth), wrap(async (req, res) => {
   await pool.query("DELETE FROM marks WHERE user_id = $1 AND item_id = $2", [req.user.id, req.params.id]);
   res.status(204).end();

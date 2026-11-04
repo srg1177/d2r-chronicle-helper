@@ -103,12 +103,32 @@
           <span class="progress-label" id="pct">0%</span>
           <div class="progress-track"><div class="progress-fill" id="fill"></div></div>
         </div>
+        <div class="foot-buttons">
+          <button class="btn" type="button" id="reset-btn">Reset Marks</button>
+          <button class="btn" type="button" id="logout-btn">Log Out</button>
+        </div>
       </div>
     </aside>
 
     <section class="list" id="list" aria-live="polite"></section>
   </div>
 </main>
+
+<!-- Reset confirmation -->
+<div class="modal" id="reset-modal" hidden>
+  <div class="window dialog" role="alertdialog" aria-labelledby="reset-title" aria-describedby="reset-text">
+    <header class="titlebar"><h1 id="reset-title">Reset Marks</h1></header>
+    <div class="dialog-body">
+      <p id="reset-text"></p>
+      <div class="dialog-buttons">
+        <button class="btn" type="button" id="reset-tab"></button>
+        <button class="btn danger" type="button" id="reset-all"></button>
+        <button class="btn" type="button" id="reset-cancel">Cancel</button>
+      </div>
+      <p class="login-error" id="reset-error" role="alert"></p>
+    </div>
+  </div>
+</div>
 
 <!-- Hover tooltip -->
 <div class="tooltip" id="tooltip" hidden></div>
