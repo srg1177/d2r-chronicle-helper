@@ -90,8 +90,6 @@ Entry ids come from the game's own row ids, so saved marks normally carry over t
 
 ## Known gaps
 
-- The game data doesn't name the Warlock's three skill trees. The tooltips call them Chaos,
-  Eldritch and Demon, inferred from the skills on each page.
 - Rainbow Facet has 8 versions in the data. They're listed as 8 entries ("Variant 1" to "8"), and
   it's unconfirmed whether the in-game Chronicle counts them separately.
 - The Runewords tab groups entries by the game's runeword categories (Body Armor, Helms, Offhand,

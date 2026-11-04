@@ -1,11 +1,11 @@
-"""Build chronicle/data.js from D2R's data tables.
+"""Build web/data.js from D2R's data tables.
 
 Source: JSON exports of the game's .txt tables from https://github.com/blizzhackers/d2data
 (json/ folder). Download these files into one directory:
   uniqueitems setitems sets runes armor weapons misc itemtypes properties skilldesc
-  itemstatcost skills runeworduicategories localestrings-eng
+  itemstatcost skills runeworduicategories localestrings-eng allstrings-eng
 
-Usage:  python -I build_data.py <d2data-json-dir> ../web/data.js
+Usage:  python3 -I tools/build_data.py <d2data-json-dir> web/data.js
 """
 import json
 import os
@@ -22,6 +22,10 @@ def load(name):
 
 
 STR = dict(json.load(open(os.path.join(SRC, "localestrings-eng.json"), encoding="utf-8")))
+# localestrings lacks names added in later patches (e.g. Runeword171 "Hysteria", the old
+# "Hustle (armor)"); fill those gaps from the full string table without overriding anything.
+for key, value in json.load(open(os.path.join(SRC, "allstrings-eng.json"), encoding="utf-8")).items():
+    STR.setdefault(key, value)
 BASES = {b["code"]: b | {"_kind": kind}
          for kind in ("armor", "weapons", "misc") for b in load(kind) if b.get("code")}
 TYPES = {t["Code"]: t for t in load("itemtypes") if t.get("Code")}
@@ -37,6 +41,7 @@ SKILLDESC = {d["skilldesc"]: d for d in load("skilldesc") if d.get("skilldesc")}
 
 CLASS_NAMES = {"ama": "Amazon", "sor": "Sorceress", "nec": "Necromancer", "pal": "Paladin",
                "bar": "Barbarian", "dru": "Druid", "ass": "Assassin", "war": "Warlock"}
+# Item skill-tab ids 0-23, in charstats.txt StrSkillTab1-3 order per class.
 SKILL_TABS = ["Bow and Crossbow", "Passive and Magic", "Javelin and Spear",
               "Fire", "Lightning", "Cold",
               "Curses", "Poison and Bone", "Summoning",
@@ -44,7 +49,7 @@ SKILL_TABS = ["Bow and Crossbow", "Passive and Magic", "Javelin and Spear",
               "Combat", "Masteries", "Warcries",
               "Summoning", "Shape Shifting", "Elemental",
               "Traps", "Shadow Disciplines", "Martial Arts",
-              "Chaos", "Eldritch", "Demon"]  # Warlock order inferred from skill pages 3/2/1, like other classes
+              "Demon", "Eldritch", "Chaos"]
 TAB_CLASS = ["Amazon"] * 3 + ["Sorceress"] * 3 + ["Necromancer"] * 3 + ["Paladin"] * 3 + \
             ["Barbarian"] * 3 + ["Druid"] * 3 + ["Assassin"] * 3 + ["Warlock"] * 3
 
