@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chronicle Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Alegreya+SC:wght@500&family=Alegreya:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Item silhouettes (placeholder art; no game assets) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-helm" viewBox="0 0 32 32"><path d="M6 20c0-8 4-13 10-13s10 5 10 13v4h-4v-4h-3v6h-6v-6h-3v4H6z"/></symbol>
+    <symbol id="i-armor" viewBox="0 0 32 32"><path d="M10 4l-6 4 2 8 3-1v13h14V15l3 1 2-8-6-4c-1 3-3 4-6 4s-5-1-6-4z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 32 32"><path d="M16 3l11 4v8c0 7-5 12-11 14C10 27 5 22 5 15V7z"/></symbol>
+    <symbol id="i-boots" viewBox="0 0 32 32"><path d="M9 3h7v15l9 4v6H7l1-6z"/></symbol>
+    <symbol id="i-belt" viewBox="0 0 32 32"><path d="M3 12h26v8H3z M13 10h6v12h-6z" fill-rule="evenodd"/></symbol>
+    <symbol id="i-gloves" viewBox="0 0 32 32"><path d="M9 28V14l-3-6 3-1 3 5V4h2v8V3h2v9V4h2v9l3-5 2 2-3 8v10z"/></symbol>
+    <symbol id="i-sword" viewBox="0 0 32 32"><path d="M15 2h2l1 18h-4zM9 20h14v2H9zM15 22h2v6h-2zM14 28h4v2h-4z"/></symbol>
+    <symbol id="i-mace" viewBox="0 0 32 32"><path d="M15 14h2v16h-2z"/><circle cx="16" cy="9" r="6"/></symbol>
+    <symbol id="i-bow" viewBox="0 0 32 32"><path d="M8 2c10 4 10 24 0 28l-1-2c8-4 8-20 0-24zM9 3l1 26" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="i-polearm" viewBox="0 0 32 32"><path d="M15 8h2v22h-2z M10 2c4 1 6 4 6 8-3 0-6-2-6-8zM22 2c-4 1-6 4-6 8 3 0 6-2 6-8z"/></symbol>
+    <symbol id="i-staff" viewBox="0 0 32 32"><path d="M15 10h2v20h-2z"/><path d="M16 1l4 5-4 5-4-5z"/></symbol>
+    <symbol id="i-amulet" viewBox="0 0 32 32"><path d="M8 3c0 8 3 12 8 14 5-2 8-6 8-14" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="22" r="6"/></symbol>
+    <symbol id="i-ring" viewBox="0 0 32 32"><circle cx="16" cy="18" r="9" fill="none" stroke="currentColor" stroke-width="4"/><path d="M13 5h6l2 4h-10z"/></symbol>
+    <symbol id="i-charm" viewBox="0 0 32 32"><path d="M10 6h12v20H10z M14 3h4v3h-4z"/></symbol>
+    <symbol id="i-jewel" viewBox="0 0 32 32"><path d="M16 4l10 9-10 15L6 13z"/></symbol>
+    <symbol id="i-circlet" viewBox="0 0 32 32"><path d="M4 18c4-3 8-4 12-4s8 1 12 4v4c-4-3-8-4-12-4s-8 1-12 4z"/><path d="M16 7l3 5h-6z"/></symbol>
+    <symbol id="i-pelt" viewBox="0 0 32 32"><path d="M6 24c0-9 4-15 10-15s10 6 10 15l-3-2-2 3-2-3-3 3-3-3-2 3-2-3z M9 10l-2-6 6 4z M23 10l2-6-6 4z"/></symbol>
+    <symbol id="i-head" viewBox="0 0 32 32"><path d="M16 4c6 0 9 4 9 10 0 5-3 8-5 9v4h-8v-4c-2-1-5-4-5-9 0-6 3-10 9-10zM11 13a2 2 0 1 0 4 0 2 2 0 1 0-4 0zM17 13a2 2 0 1 0 4 0 2 2 0 1 0-4 0z" fill-rule="evenodd"/></symbol>
+    <symbol id="i-book" viewBox="0 0 32 32"><path d="M7 4h16l3 3v21H9l-2-2z M13 10h8v2h-8z M16 15l3 4-3 4-3-4z" fill-rule="evenodd"/></symbol>
+    <symbol id="i-axe" viewBox="0 0 32 32"><path d="M15 6h2v24h-2z"/><path d="M17 5c6 0 9 4 9 9-3-2-6-2-9-1z"/></symbol>
+    <symbol id="i-xbow" viewBox="0 0 32 32"><path d="M15 6h2v24h-2z M4 12c4-3 8-4 12-4s8 1 12 4l-1 2c-4-2-7-3-11-3s-7 1-11 3z"/></symbol>
+    <symbol id="i-dagger" viewBox="0 0 32 32"><path d="M15 4h2l1 14h-4zM10 18h12v2H10zM15 20h2v6h-2zM14 26h4v2h-4z"/></symbol>
+    <symbol id="i-javelin" viewBox="0 0 32 32"><path d="M15 9h2v21h-2z M16 1l3 8h-6z"/></symbol>
+    <symbol id="i-scepter" viewBox="0 0 32 32"><path d="M15 12h2v18h-2z"/><path d="M16 2l5 4v4l-5 3-5-3V6z"/></symbol>
+    <symbol id="i-wand" viewBox="0 0 32 32"><path d="M15 8h2v22h-2z"/><circle cx="16" cy="6" r="3"/></symbol>
+    <symbol id="i-claw" viewBox="0 0 32 32"><path d="M8 4h2v14H8zM14 2h2v16h-2zM20 4h2v14h-2zM6 18h18v4H6zM12 22h6v8h-6z"/></symbol>
+    <symbol id="i-orb" viewBox="0 0 32 32"><circle cx="16" cy="14" r="9"/><path d="M11 24h10l-2 5h-6z"/></symbol>
+  </defs>
+</svg>
+
+<div class="backdrop"></div>
+
+<!-- Login / register -->
+<main class="window login" id="login" hidden>
+  <header class="titlebar">
+    <h1>Chronicle</h1>
+  </header>
+  <form class="login-form" id="login-form" autocomplete="on">
+    <p class="login-intro" id="login-intro">Log in to see your saved marks.</p>
+    <label class="field"><span>Username</span>
+      <input name="username" autocomplete="username" required maxlength="32"></label>
+    <label class="field"><span>Password</span>
+      <input name="password" type="password" autocomplete="current-password" required maxlength="200"></label>
+    <label class="field" id="confirm-field" hidden><span>Confirm Password</span>
+      <input name="confirm" type="password" autocomplete="new-password" maxlength="200"></label>
+    <p class="login-error" id="login-error" role="alert"></p>
+    <button class="btn" type="submit" id="login-submit">Log In</button>
+    <button class="linkbtn" type="button" id="login-switch" hidden>Create a new account</button>
+  </form>
+</main>
+
+<main class="window" id="app" role="dialog" aria-labelledby="win-title" hidden>
+  <header class="titlebar">
+    <span class="user" id="user"></span>
+    <h1 id="win-title">Chronicle</h1>
+    <button class="close" id="logout" aria-label="Log out" title="Log out">×</button>
+  </header>
+
+  <div class="tabrow">
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="unique" role="tab">Unique</button>
+      <button class="tab" data-tab="sets" role="tab">Sets</button>
+      <button class="tab" data-tab="runewords" role="tab">Runewords</button>
+    </nav>
+    <input class="search" type="search" placeholder="Search..." aria-label="Search items">
+  </div>
+
+  <div class="filterrow">
+    <label class="check"><input type="checkbox" checked data-tier="normal"><span class="box"></span>Normal</label>
+    <label class="check"><input type="checkbox" checked data-tier="exceptional"><span class="box"></span>Exceptional</label>
+    <label class="check"><input type="checkbox" checked data-tier="elite"><span class="box"></span>Elite</label>
+    <div class="select">
+      <select aria-label="Discovery filter">
+        <option>All</option>
+        <option>Discovered</option>
+        <option>Undiscovered</option>
+      </select>
+    </div>
+    <div class="shown" id="shown" aria-live="polite"></div>
+  </div>
+
+  <div class="body">
+    <aside class="sidebar">
+      <ul class="tree" id="tree"></ul>
+      <div class="sidebar-foot">
+        <div class="progress" title="Collection progress">
+          <span class="progress-label" id="pct">0%</span>
+          <div class="progress-track"><div class="progress-fill" id="fill"></div></div>
+        </div>
+        <div class="foot-buttons">
+          <button class="btn" type="button" id="reset-btn">Reset Marks</button>
+          <button class="btn" type="button" id="logout-btn">Log Out</button>
+        </div>
+      </div>
+    </aside>
+
+    <section class="list" id="list" aria-live="polite"></section>
+  </div>
+</main>
+
+<!-- Reset confirmation -->
+<div class="modal" id="reset-modal" hidden>
+  <div class="window dialog" role="alertdialog" aria-labelledby="reset-title" aria-describedby="reset-text">
+    <header class="titlebar"><h1 id="reset-title">Reset Marks</h1></header>
+    <div class="dialog-body">
+      <p id="reset-text"></p>
+      <div class="dialog-buttons">
+        <button class="btn" type="button" id="reset-tab"></button>
+        <button class="btn danger" type="button" id="reset-all"></button>
+        <button class="btn" type="button" id="reset-cancel">Cancel</button>
+      </div>
+      <p class="login-error" id="reset-error" role="alert"></p>
+    </div>
+  </div>
+</div>
+
+<!-- Hover tooltip -->
+<div class="tooltip" id="tooltip" hidden></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
